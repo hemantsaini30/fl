@@ -34,7 +34,7 @@ export const ThemeSelector = () => {
       {isOpen && (
         <div className="theme-popover" role="dialog" aria-label="Theme options">
           <div className="theme-popover-header">
-            <span>Color Palette (5 Themes)</span>
+            <span>Color Palettes ({themes.length} Themes)</span>
           </div>
           {themes.map((theme) => {
             const isActive = theme.id === themeId;

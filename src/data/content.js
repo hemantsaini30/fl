@@ -452,5 +452,53 @@ export const THEMES = [
     charcoalMute: "#78684D",
     glow: "rgba(245, 158, 11, 0.6)",
     colorDot: "#F59E0B"
+  },
+  {
+    id: "alabaster",
+    name: "Nordic Alabaster",
+    subtitle: "Aesthetic Warm Off-White & Slate",
+    primary: "#4F46E5",
+    accentSoft: "#A5B4FC",
+    accentBright: "#6366F1",
+    ink: "#0C0F17",
+    inkSoft: "#151B28",
+    paper: "#FAF7F2",
+    paperDim: "#F0ECE1",
+    charcoal: "#181824",
+    charcoalMute: "#5C6479",
+    glow: "rgba(79, 70, 229, 0.5)",
+    colorDot: "#E8E2D5"
+  },
+  {
+    id: "rose",
+    name: "Rose Quartz",
+    subtitle: "Aesthetic Blush & Champagne Noir",
+    primary: "#D946EF",
+    accentSoft: "#F5D0FE",
+    accentBright: "#E879F9",
+    ink: "#140914",
+    inkSoft: "#241024",
+    paper: "#FCF7F9",
+    paperDim: "#F5E9F0",
+    charcoal: "#1F0E1F",
+    charcoalMute: "#735673",
+    glow: "rgba(217, 70, 239, 0.55)",
+    colorDot: "#EC4899"
+  },
+  {
+    id: "glacier",
+    name: "Cyber Glacier",
+    subtitle: "Futuristic Ice Cyan & Abyssal Navy",
+    primary: "#06B6D4",
+    accentSoft: "#67E8F9",
+    accentBright: "#22D3EE",
+    ink: "#030D14",
+    inkSoft: "#091926",
+    paper: "#F4FAFC",
+    paperDim: "#E5F3F7",
+    charcoal: "#081A24",
+    charcoalMute: "#486775",
+    glow: "rgba(6, 182, 212, 0.6)",
+    colorDot: "#06B6D4"
   }
 ];
