@@ -500,5 +500,53 @@ export const THEMES = [
     charcoalMute: "#486775",
     glow: "rgba(6, 182, 212, 0.6)",
     colorDot: "#06B6D4"
+  },
+  {
+    id: "buttercream",
+    name: "Vanilla Butter",
+    subtitle: "Pastel Light Yellow & Warm Honey",
+    primary: "#D97706",
+    accentSoft: "#FDE047",
+    accentBright: "#FACC15",
+    ink: "#120F08",
+    inkSoft: "#1E1A0E",
+    paper: "#FEFDF5",
+    paperDim: "#FDF8DE",
+    charcoal: "#1C1917",
+    charcoalMute: "#78716C",
+    glow: "rgba(234, 179, 8, 0.55)",
+    colorDot: "#FEF08A"
+  },
+  {
+    id: "platinum",
+    name: "Platinum Mist",
+    subtitle: "Clean Light Grey & Slate Titanium",
+    primary: "#475569",
+    accentSoft: "#94A3B8",
+    accentBright: "#64748B",
+    ink: "#0A0D14",
+    inkSoft: "#131824",
+    paper: "#F8FAFC",
+    paperDim: "#ECEFF4",
+    charcoal: "#0F172A",
+    charcoalMute: "#64748B",
+    glow: "rgba(100, 116, 139, 0.45)",
+    colorDot: "#CBD5E1"
+  },
+  {
+    id: "apricot",
+    name: "Apricot Cream",
+    subtitle: "Pastel Light Orange & Sunset Coral",
+    primary: "#EA580C",
+    accentSoft: "#FDBA74",
+    accentBright: "#FB923C",
+    ink: "#140B07",
+    inkSoft: "#22140D",
+    paper: "#FFFBF7",
+    paperDim: "#FDF0E3",
+    charcoal: "#1C130E",
+    charcoalMute: "#78655A",
+    glow: "rgba(234, 88, 12, 0.55)",
+    colorDot: "#FDBA74"
   }
 ];
