@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { LogOut, RefreshCw, Search, Phone, Mail, CheckCircle, Clock, Shield, Inbox, CheckCircle2, AlertCircle, ArrowLeft } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { LogOut, RefreshCw, Search, Phone, Mail, Clock, Shield, Inbox, CheckCircle2, AlertCircle, ArrowLeft, Calendar, BookOpen, MessageSquare } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { fetchEnquiries, markEnquiryAsRead } from '../../lib/supabase';
 import { INSTITUTE_INFO } from '../../data/content';
@@ -88,52 +88,67 @@ export const AdminDashboard = () => {
     <div className="admin-layout">
       {/* Top Header */}
       <header className="admin-navbar">
-        <div className="admin-nav-left">
-          <Link to="/" className="nav-brand" style={{ gap: '10px' }}>
-            <div className="brand-logo-mark" style={{ width: '36px', height: '36px', fontSize: '1rem' }}>KK</div>
-            <span className="brand-name" style={{ fontSize: '1.05rem' }}>{INSTITUTE_INFO.shortName}</span>
-          </Link>
-          <span className="admin-badge">Admin Dashboard</span>
-        </div>
-
-        <div className="admin-nav-right">
-          <ThemeSelector />
-
-          <div className="admin-user-pill">
-            <Shield size={14} color="var(--accent-soft)" />
-            <span>{user?.email || 'admin@kelikunj.com'}</span>
+        <div className="admin-navbar-inner">
+          <div className="admin-nav-left">
+            <Link to="/" className="nav-brand" style={{ gap: '8px' }}>
+              <div className="brand-logo-mark" style={{ width: '34px', height: '34px', fontSize: '0.95rem' }}>KK</div>
+              <span className="brand-name" style={{ fontSize: '1rem' }}>{INSTITUTE_INFO.shortName}</span>
+            </Link>
+            <span className="admin-badge">Admin</span>
           </div>
 
-          <button
-            className="btn btn-secondary btn-sm"
-            onClick={loadData}
-            title="Refresh Table"
-          >
-            <RefreshCw size={15} className={loading ? 'animate-spin' : ''} />
-            <span>Refresh</span>
-          </button>
+          <div className="admin-nav-right">
+            <ThemeSelector />
 
-          <button
-            className="btn btn-secondary btn-sm"
-            onClick={logout}
-            style={{ color: '#FB7185', borderColor: 'rgba(244, 63, 94, 0.3)' }}
-          >
-            <LogOut size={15} />
-            <span>Sign Out</span>
-          </button>
+            <div className="admin-user-pill hide-on-mobile">
+              <Shield size={14} color="var(--accent-soft)" />
+              <span>{user?.email || 'admin@kelikunj.com'}</span>
+            </div>
+
+            <button
+              className="btn btn-secondary btn-sm admin-icon-btn"
+              onClick={loadData}
+              title="Refresh Data"
+              aria-label="Refresh Data"
+            >
+              <RefreshCw size={15} className={loading ? 'animate-spin' : ''} />
+              <span className="btn-text-hide-mobile">Refresh</span>
+            </button>
+
+            <button
+              className="btn btn-secondary btn-sm admin-signout-btn"
+              onClick={logout}
+              title="Sign Out"
+            >
+              <LogOut size={15} />
+              <span className="btn-text-hide-mobile">Sign Out</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Info Strip */}
+        <div className="admin-mobile-substrip show-on-mobile">
+          <div className="admin-user-mobile">
+            <Shield size={13} color="var(--accent-soft)" />
+            <span>{user?.email || 'admin@kelikunj.com'}</span>
+          </div>
+          <Link to="/" className="admin-mobile-site-link">
+            <ArrowLeft size={13} />
+            <span>Public Site</span>
+          </Link>
         </div>
       </header>
 
       {/* Main Content Area */}
       <main className="admin-content">
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '28px' }}>
+        <div className="admin-page-title-row">
           <div>
-            <h1 style={{ fontSize: '2rem', marginBottom: '6px' }}>Admissions Enquiries</h1>
-            <p style={{ color: 'rgba(250, 250, 252, 0.65)', fontSize: '0.95rem' }}>
+            <h1 className="admin-page-title">Admissions Enquiries</h1>
+            <p className="admin-page-subtitle">
               Real-time incoming student leads and counseling requests.
             </p>
           </div>
-          <Link to="/" className="btn btn-secondary btn-sm">
+          <Link to="/" className="btn btn-secondary btn-sm hide-on-mobile">
             <ArrowLeft size={16} />
             <span>View Public Site</span>
           </Link>
@@ -143,7 +158,7 @@ export const AdminDashboard = () => {
         <div className="admin-stats-row">
           <div className="admin-stat-card">
             <div className="admin-stat-icon-wrapper">
-              <Inbox size={26} />
+              <Inbox size={24} />
             </div>
             <div className="admin-stat-info">
               <h4>Total Enquiries</h4>
@@ -153,7 +168,7 @@ export const AdminDashboard = () => {
 
           <div className="admin-stat-card">
             <div className="admin-stat-icon-wrapper unread">
-              <AlertCircle size={26} />
+              <AlertCircle size={24} />
             </div>
             <div className="admin-stat-info">
               <h4>Unread Requests</h4>
@@ -163,7 +178,7 @@ export const AdminDashboard = () => {
 
           <div className="admin-stat-card">
             <div className="admin-stat-icon-wrapper read">
-              <CheckCircle2 size={26} />
+              <CheckCircle2 size={24} />
             </div>
             <div className="admin-stat-info">
               <h4>Resolved / Read</h4>
@@ -179,7 +194,7 @@ export const AdminDashboard = () => {
               className={`admin-filter-tab ${filter === 'all' ? 'active' : ''}`}
               onClick={() => setFilter('all')}
             >
-              All Leads ({totalCount})
+              All ({totalCount})
             </button>
             <button
               className={`admin-filter-tab ${filter === 'unread' ? 'active' : ''}`}
@@ -207,8 +222,65 @@ export const AdminDashboard = () => {
           </div>
         </div>
 
-        {/* Enquiries Data Table */}
-        <div className="admin-table-container">
+        {/* 1. Mobile Cards View (Visible on screens <= 768px) */}
+        <div className="admin-mobile-cards-view show-on-mobile-block">
+          {filteredEnquiries.length > 0 ? (
+            filteredEnquiries.map((enquiry) => (
+              <div
+                key={enquiry.id}
+                className={`admin-lead-card ${!enquiry.is_read ? 'unread' : ''}`}
+              >
+                <div className="admin-lead-card-header">
+                  <div className="student-name-cell">
+                    {!enquiry.is_read && <div className="unread-bullet" />}
+                    <span className="admin-lead-name">{enquiry.name}</span>
+                  </div>
+                  <span className={`status-tag ${enquiry.is_read ? 'read' : 'unread'}`}>
+                    {enquiry.is_read ? 'Read' : 'Unread'}
+                  </span>
+                </div>
+
+                <div className="admin-lead-card-meta">
+                  <span className="course-badge">{enquiry.course || 'General'}</span>
+                  <div className="admin-lead-time">
+                    <Clock size={13} />
+                    <span>{formatDate(enquiry.created_at)}</span>
+                  </div>
+                </div>
+
+                <a href={`tel:${enquiry.phone}`} className="admin-lead-call-btn">
+                  <Phone size={15} />
+                  <span>Call {enquiry.phone}</span>
+                </a>
+
+                {enquiry.message && (
+                  <div className="admin-lead-msg-box">
+                    <MessageSquare size={14} className="admin-lead-msg-icon" />
+                    <p>{enquiry.message}</p>
+                  </div>
+                )}
+
+                <div className="admin-lead-card-footer">
+                  <button
+                    className="btn btn-secondary btn-sm admin-lead-action-btn"
+                    onClick={() => handleToggleStatus(enquiry.id, enquiry.is_read)}
+                    disabled={updatingId === enquiry.id}
+                  >
+                    {enquiry.is_read ? 'Mark Unread' : '✓ Mark as Read'}
+                  </button>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="empty-state">
+              <Inbox size={40} style={{ opacity: 0.3, marginBottom: '10px' }} />
+              <p>No enquiries found matching your filter.</p>
+            </div>
+          )}
+        </div>
+
+        {/* 2. Desktop Data Table (Visible on screens > 768px) */}
+        <div className="admin-table-container hide-on-mobile-block">
           <table className="admin-table">
             <thead>
               <tr>
