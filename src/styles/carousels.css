@@ -1,0 +1,318 @@
+/* ==========================================================================
+   CAROUSEL STYLES (ACHIEVERS & TRIPS / GALLERY)
+   ========================================================================== */
+
+.carousel-section {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Header Controls Wrapper (Pills + Arrow Navs) */
+.carousel-controls-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+/* Year Filter Pills */
+.filter-pills-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.filter-pill {
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(250, 250, 252, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 8px 18px;
+  border-radius: var(--radius-pill);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.filter-pill:hover {
+  background: rgba(255, 255, 255, 0.16);
+  color: #FFFFFF;
+}
+
+.filter-pill.active {
+  background: var(--accent);
+  color: #FFFFFF;
+  border-color: var(--accent-bright);
+  box-shadow: 0 4px 14px -2px var(--accent-glow);
+}
+
+/* Navigation Arrow Buttons */
+.carousel-nav-arrows {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.carousel-nav-btn {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-bounce);
+  backdrop-filter: blur(8px);
+}
+
+.carousel-nav-btn:hover:not(:disabled) {
+  background: var(--accent);
+  border-color: var(--accent-bright);
+  transform: scale(1.08);
+  box-shadow: 0 4px 16px var(--accent-glow);
+}
+
+.carousel-nav-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* Light Theme Carousel Nav Buttons */
+.section-light .carousel-nav-btn,
+.section-dim .carousel-nav-btn {
+  background: var(--paper);
+  border: 1px solid rgba(23, 21, 31, 0.12);
+  color: var(--charcoal);
+  box-shadow: var(--shadow-sm);
+}
+
+.section-light .carousel-nav-btn:hover:not(:disabled),
+.section-dim .carousel-nav-btn:hover:not(:disabled) {
+  background: var(--accent);
+  color: #FFFFFF;
+  border-color: var(--accent);
+}
+
+/* Carousel Track & Container */
+.carousel-track-container {
+  position: relative;
+  width: 100%;
+}
+
+.carousel-track {
+  display: flex;
+  gap: 24px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  padding: 12px 4px 32px 4px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+.carousel-track::-webkit-scrollbar {
+  height: 6px;
+}
+
+.carousel-track::-webkit-scrollbar-thumb {
+  background: rgba(167, 155, 255, 0.25);
+  border-radius: 3px;
+}
+
+/* --------------------------------------------------------------------------
+   ACHIEVER CARDS
+   -------------------------------------------------------------------------- */
+.achiever-card {
+  flex: 0 0 320px;
+  scroll-snap-align: start;
+  background: var(--ink-soft);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: all var(--transition-fast);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.achiever-card:hover {
+  transform: translateY(-8px);
+  border-color: var(--accent-bright);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 20px -5px var(--accent-glow);
+}
+
+.achiever-image-box {
+  position: relative;
+  width: 100%;
+  height: 280px;
+  overflow: hidden;
+  background: #121020;
+}
+
+.achiever-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  transition: transform 0.5s ease;
+}
+
+.achiever-card:hover .achiever-photo {
+  transform: scale(1.06);
+}
+
+.achiever-year-badge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: rgba(13, 11, 26, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #FFFFFF;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 0.75rem;
+  font-weight: 700;
+  backdrop-filter: blur(8px);
+}
+
+.achiever-course-badge {
+  position: absolute;
+  bottom: 14px;
+  left: 14px;
+  background: var(--accent);
+  color: #FFFFFF;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.achiever-content {
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: space-between;
+}
+
+.achiever-name {
+  font-size: 1.3rem;
+  color: #FFFFFF;
+  margin-bottom: 6px;
+}
+
+.achiever-result {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--accent-bright);
+  margin-bottom: 12px;
+}
+
+.achiever-highlight {
+  font-size: 0.8125rem;
+  color: rgba(250, 250, 252, 0.65);
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* --------------------------------------------------------------------------
+   TRIPS & GALLERY CARDS
+   -------------------------------------------------------------------------- */
+.trip-card {
+  flex: 0 0 380px;
+  scroll-snap-align: start;
+  background: var(--paper);
+  border: 1px solid rgba(23, 21, 31, 0.08);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: all var(--transition-fast);
+  box-shadow: var(--shadow-sm);
+}
+
+.trip-card:hover {
+  transform: translateY(-8px);
+  border-color: var(--accent-bright);
+  box-shadow: var(--shadow-md);
+}
+
+.trip-image-box {
+  width: 100%;
+  height: 240px;
+  overflow: hidden;
+  position: relative;
+}
+
+.trip-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.trip-card:hover .trip-photo {
+  transform: scale(1.05);
+}
+
+.trip-tag-badge {
+  position: absolute;
+  bottom: 14px;
+  left: 14px;
+  background: rgba(13, 11, 26, 0.8);
+  color: #FFFFFF;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  font-size: 0.75rem;
+  font-weight: 600;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.trip-content {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.trip-title {
+  font-size: 1.25rem;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.trip-desc {
+  font-size: 0.9rem;
+  color: var(--charcoal-mute);
+  line-height: 1.6;
+}
+
+/* --------------------------------------------------------------------------
+   RESPONSIVE BREAKPOINTS FOR CAROUSELS
+   -------------------------------------------------------------------------- */
+@media (max-width: 640px) {
+  .achiever-card {
+    flex: 0 0 280px;
+  }
+  .achiever-image-box {
+    height: 240px;
+  }
+  .trip-card {
+    flex: 0 0 300px;
+  }
+  .trip-image-box {
+    height: 200px;
+  }
+  .carousel-controls-bar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
