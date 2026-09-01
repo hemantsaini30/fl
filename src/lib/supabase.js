@@ -1,19 +1,31 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const rawUrl = import.meta.env.VITE_SUPABASE_URL || '';
+const rawKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+
+// Clean up any accidental trailing slashes, subpaths (/rest/v1), or quotes
+const cleanUrl = rawUrl
+  .trim()
+  .replace(/^["']|["']$/g, '')
+  .replace(/\/rest\/v1\/?$/, '')
+  .replace(/\/+$/, '');
+
+const cleanKey = rawKey
+  .trim()
+  .replace(/^["']|["']$/g, '');
 
 // Check if valid Supabase credentials exist
 export const isSupabaseConfigured = Boolean(
-  supabaseUrl && 
-  supabaseAnonKey && 
-  supabaseUrl !== 'https://your-project-id.supabase.co' &&
-  !supabaseUrl.includes('your-project-id')
+  cleanUrl && 
+  cleanKey && 
+  cleanUrl !== 'https://your-project-id.supabase.co' &&
+  !cleanUrl.includes('your-project-id') &&
+  cleanUrl.startsWith('http')
 );
 
 // Initialize Supabase Client
 export const supabase = isSupabaseConfigured
-  ? createClient(supabaseUrl, supabaseAnonKey)
+  ? createClient(cleanUrl, cleanKey)
   : null;
 
 // Local fallback storage helper for testing before Supabase env setup
@@ -74,20 +86,32 @@ const saveLocalEnquiries = (enquiries) => {
 // Database API abstraction
 export const submitEnquiry = async ({ name, phone, course, message }) => {
   if (isSupabaseConfigured && supabase) {
-    const { data, error } = await supabase
+    // Insert without chained .select() so anonymous users don't trigger select RLS permissions
+    const { error } = await supabase
       .from('enquiries')
-      .insert([{ name, phone, course, message, is_read: false }])
-      .select();
+      .insert([
+        {
+          name: name ? name.trim() : '',
+          phone: phone ? phone.trim() : '',
+          course: course || null,
+          message: message ? message.trim() : null,
+          is_read: false
+        }
+      ]);
     
-    if (error) throw error;
-    return { data, isLocal: false };
+    if (error) {
+      console.error('Supabase submission error:', error);
+      throw new Error(error.message || 'Database submission failed');
+    }
+
+    return { data: [{ name, phone, course, message }], isLocal: false };
   } else {
     // Local fallback
     const enquiries = getLocalEnquiries();
     const newEntry = {
       id: 'local-' + Date.now(),
-      name,
-      phone,
+      name: name ? name.trim() : '',
+      phone: phone ? phone.trim() : '',
       course,
       message,
       is_read: false,
@@ -96,7 +120,7 @@ export const submitEnquiry = async ({ name, phone, course, message }) => {
     enquiries.unshift(newEntry);
     saveLocalEnquiries(enquiries);
     // Simulate minor network delay
-    await new Promise((resolve) => setTimeout(resolve, 600));
+    await new Promise((resolve) => setTimeout(resolve, 500));
     return { data: [newEntry], isLocal: true };
   }
 };
@@ -108,7 +132,10 @@ export const fetchEnquiries = async () => {
       .select('*')
       .order('created_at', { ascending: false });
     
-    if (error) throw error;
+    if (error) {
+      console.error('Error fetching enquiries from Supabase:', error);
+      throw error;
+    }
     return { data: data || [], isLocal: false };
   } else {
     const data = getLocalEnquiries();
@@ -121,10 +148,12 @@ export const markEnquiryAsRead = async (id, isRead = true) => {
     const { data, error } = await supabase
       .from('enquiries')
       .update({ is_read: isRead })
-      .eq('id', id)
-      .select();
+      .eq('id', id);
     
-    if (error) throw error;
+    if (error) {
+      console.error('Error updating enquiry in Supabase:', error);
+      throw error;
+    }
     return { data, isLocal: false };
   } else {
     const enquiries = getLocalEnquiries();
